@@ -24,7 +24,7 @@
 
 <main class="page">
   <h1>Nos Produits</h1>
-  <p>Ici tu mettras toutes tes sneakers 👟</p>
+  <p></p>
 </main>
 
 </body>

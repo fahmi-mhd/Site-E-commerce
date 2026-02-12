@@ -1,14 +1,14 @@
 [
     {
-        "name": "fahmi",
+        "name": "Fahmi",
         "rating": 5,
-        "message": "livraison parfaite",
+        "message": "Livraison parfaite, Chaussures très confortable comme sur la description !",
         "date": "2026-02-11 14:58"
     },
     {
-        "name": "fahmi",
-        "rating": 5,
-        "message": "livraison parfaite",
-        "date": "2026-02-11 14:58"
+        "name": "Corentin",
+        "rating": 4,
+        "message": "Je recommande ce site pour vos sneakers, fiable, authenticité vérifié !",
+        "date": "2026-02-12 16:11"
     }
 ]
