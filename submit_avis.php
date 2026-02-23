@@ -1,5 +1,4 @@
 <?php
-// submit_avis.php — enregistrement d'avis (simple)
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -35,6 +34,5 @@ $avis[] = [
 
 file_put_contents($avisFile, json_encode($avis, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-// redirection vers page avis
 header("Location: avis.php");
 exit;

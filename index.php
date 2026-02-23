@@ -27,12 +27,12 @@ unset($_SESSION["flash"]);
       <div class="logo">SneakVerse</div>
 
       <nav class="menu">
-        <a href="accueil" class="active">Accueil</a>
+        <a href="index.php" class="active">Accueil</a>
         <a href="produit.php">Produits</a>
-        <a href="hommes.php">Homme</a>
-        <a href="femmes.php">Femme</a>
-        <a href="contact.php">Contact</a>
-      </nav>
+        <a href="nouveautes.php">Nouveautés</a>
+        <a href="index.php#about">À propos</a>
+        <a href="index.php#avis">Avis</a>
+</nav>
 
       <div class="nav-actions">
         <button class="icon-btn" aria-label="Compte">
@@ -41,7 +41,6 @@ unset($_SESSION["flash"]);
           </svg>
         </button>
 
-        <!-- ✅ MODIF: bouton panier -> lien vers panier.php (même style) -->
         <a class="icon-btn cart-btn" href="panier.php" aria-label="Panier">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7V6a5 5 0 0110 0v1h3v15H4V7h3zm2 0h6V6a3 3 0 00-6 0v1zm-3 2v11h12V9H6z"/></svg>
           <?php if ($cartCount > 0): ?>
@@ -68,13 +67,11 @@ unset($_SESSION["flash"]);
             Inspirée du corps humain, une silhouette iconique. Confort, style et amorti Max Air.
           </p>
 
-          <!-- ✅ MODIF: on garde .hero-cta mais sans doublon div -->
           <form action="panier.php" method="post" class="hero-cta">
             <input type="hidden" name="action" value="add">
             <input type="hidden" name="id" value="airmax95">
             <input type="hidden" name="name" value="Nike Air Max 95">
             <input type="hidden" name="price" value="129.99">
-            <!-- ✅ tu affiches l'image depuis assets, donc on envoie la même -->
             <input type="hidden" name="img" value="assets/airmax95.png">
             <button class="buy-now" type="submit">Acheter</button>
           </form>
@@ -101,66 +98,79 @@ unset($_SESSION["flash"]);
 
         <div class="products-grid">
 
-          <article class="product-card">
-            <img src="assets/aj4.png" alt="Air Jordan 4 Metallic Purple">
-            <h3>Air Jordan 4 Metallic Purple</h3>
-            <p class="product-price">189,99 €</p>
+ <article class="product-card">
+  <a class="product-link" href="product.php?id=aj4" aria-label="Voir Air Jordan 4 Metallic Purple">
+    <img src="assets/aj4.png" alt="Air Jordan 4 Metallic Purple">
+    <h3>Air Jordan 4 Metallic Purple</h3>
+    <p class="product-price">189,99 €</p>
+  </a>
 
-            <!-- ✅ MODIF: bouton + -> form POST (même bouton, même classe) -->
-            <form action="panier.php" method="post">
-              <input type="hidden" name="action" value="add">
-              <input type="hidden" name="id" value="aj4">
-              <input type="hidden" name="name" value="Air Jordan 4 Metallic Purple">
-              <input type="hidden" name="price" value="189.99">
-              <input type="hidden" name="img" value="assets/aj4.png">
-              <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
-            </form>
-          </article>
+  <form action="panier.php" method="post">
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="id" value="aj4">
+    <input type="hidden" name="name" value="Air Jordan 4 Metallic Purple">
+    <input type="hidden" name="price" value="189.99">
+    <input type="hidden" name="img" value="assets/aj4.png">
+    <input type="hidden" name="redirect" value="index.php#product">
+    <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
+  </form>
+</article>
 
-          <article class="product-card">
-            <img src="assets/af1.png" alt="Air Force 1">
-            <h3>Air Force 1</h3>
-            <p class="product-price">119,99 €</p>
+  <article class="product-card">
+  <a class="product-link" href="product.php?id=af1" aria-label="Voir Air Force 1">
+    <img src="assets/af1.png" alt="Air Force 1">
+    <h3>Air Force 1</h3>
+    <p class="product-price">119,99 €</p>
+  </a>
 
-            <form action="panier.php" method="post">
-              <input type="hidden" name="action" value="add">
-              <input type="hidden" name="id" value="af1">
-              <input type="hidden" name="name" value="Air Force 1">
-              <input type="hidden" name="price" value="119.99">
-              <input type="hidden" name="img" value="assets/af1.png">
-              <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
-            </form>
-          </article>
+  <form action="panier.php" method="post">
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="id" value="af1">
+    <input type="hidden" name="name" value="Air Force 1">
+    <input type="hidden" name="price" value="119.99">
+    <input type="hidden" name="img" value="assets/af1.png">
+    <input type="hidden" name="redirect" value="index.php#produits">
+    <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
+  </form>
+</article>
 
-          <article class="product-card">
-            <img src="assets/aj1ts.png" alt="Air Jordan 1 Retro Travis Scott">
-            <h3>AJ1 Retro Travis Scott</h3>
-            <p class="product-price">199,99 €</p>
 
-            <form action="panier.php" method="post">
-              <input type="hidden" name="action" value="add">
-              <input type="hidden" name="id" value="aj1ts">
-              <input type="hidden" name="name" value="AJ1 Retro Travis Scott">
-              <input type="hidden" name="price" value="199.99">
-              <input type="hidden" name="img" value="assets/aj1ts.png">
-              <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
-            </form>
-          </article>
+<article class="product-card">
+  <a class="product-link" href="product.php?id=aj1ts" aria-label="Voir AJ1 Retro Travis Scott">
+    <img src="assets/aj1ts.png" alt="AJ1 Retro Travis Scott">
+    <h3>AJ1 Retro Travis Scott</h3>
+    <p class="product-price">199,99 €</p>
+  </a>
 
-          <article class="product-card">
-            <img src="assets/vomero5.png" alt="Nike Zoom Vomero 5 Blue">
-            <h3>Nike Zoom Vomero 5 Blue</h3>
-            <p class="product-price">159,99 €</p>
+  <form action="panier.php" method="post">
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="id" value="aj1ts">
+    <input type="hidden" name="name" value="AJ1 Retro Travis Scott">
+    <input type="hidden" name="price" value="199.99">
+    <input type="hidden" name="img" value="assets/aj1ts.png">
+    <input type="hidden" name="redirect" value="index.php#produits">
+    <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
+  </form>
+</article>
 
-            <form action="panier.php" method="post">
-              <input type="hidden" name="action" value="add">
-              <input type="hidden" name="id" value="vomero5">
-              <input type="hidden" name="name" value="Nike Zoom Vomero 5 Blue">
-              <input type="hidden" name="price" value="159.99">
-              <input type="hidden" name="img" value="assets/vomero5.png">
-              <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
-            </form>
-          </article>
+
+<article class="product-card">
+  <a class="product-link" href="product.php?id=vomero5" aria-label="Voir Nike Zoom Vomero 5 Blue">
+    <img src="assets/vomero5.png" alt="Nike Zoom Vomero 5 Blue">
+    <h3>Nike Zoom Vomero 5 Blue</h3>
+    <p class="product-price">159,99 €</p>
+  </a>
+
+  <form action="panier.php" method="post">
+    <input type="hidden" name="action" value="add">
+    <input type="hidden" name="id" value="vomero5">
+    <input type="hidden" name="name" value="Nike Zoom Vomero 5 Blue">
+    <input type="hidden" name="price" value="159.99">
+    <input type="hidden" name="img" value="assets/vomero5.png">
+    <input type="hidden" name="redirect" value="index.php#produits">
+    <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
+  </form>
+</article>
 
         </div>
       </section>
