@@ -38,26 +38,39 @@ unset($_SESSION["flash"]);
 
   <nav class="menu">
       <a href="index.php">Accueil</a>
-       <a href="produit.php">Produits</a>
-      <a href="nouveautes.php">Nouveautés</a>
+      <a href="produit.php">Produits</a>
+      <a href="nouveautes.php">Nouveautés <span class="nav-new">NEW</span></a> 
       <a href="index.php#about">À propos</a>
-      <a href="contact.php">Contact</a>
+      <a href="index.php#avis">Avis</a>
   </nav>
 
-    <div class="nav-actions">
-      <a class="icon-btn cart-btn" href="panier.php" aria-label="Panier">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7V6a5 5 0 0110 0v1h3v15H4V7h3zm2 0h6V6a3 3 0 00-6 0v1zm-3 2v11h12V9H6z"/></svg>
-        <?php if ($cartCount > 0): ?>
-          <span class="cart-badge"><?= (int)$cartCount ?></span>
+          <div class="nav-actions">
+        <?php if (!empty($_SESSION["user"])): ?>
+          <a class="icon-btn is-accent" href="profil.php" aria-label="Mon compte">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12a5 5 0 10-5-5 5 5 0 005 5zm0 2c-4.42 0-8 2-8 4.5V21h16v-2.5C20 16 16.42 14 12 14z"/>
+            </svg>
+          </a>
+        <?php else: ?>
+          <a class="icon-btn" href="login.php" aria-label="Connexion">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 12a5 5 0 10-5-5 5 5 0 005 5zm0 2c-4.42 0-8 2-8 4.5V21h16v-2.5C20 16 16.42 14 12 14z"/>
+            </svg>
+          </a>
         <?php endif; ?>
-      </a>
-    </div>
-  </div>
-</header>
 
-<?php if (!empty($flash)): ?>
-  <div class="toast"><?= htmlspecialchars($flash) ?></div>
-<?php endif; ?>
+        <a class="icon-btn cart-btn" href="panier.php" aria-label="Panier">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 7V6a5 5 0 0110 0v1h3v15H4V7h3zm2 0h6V6a3 3 0 00-6 0v1zm-3 2v11h12V9H6z"/>
+          </svg>
+
+          <?php if ($cartCount > 0): ?>
+            <span class="cart-badge"><?= (int)$cartCount ?></span>
+          <?php endif; ?>
+        </a>
+      </div>
+    </div>
+  </header>
 
 <main class="page">
   <h1 class="section-title">Produits</h1>

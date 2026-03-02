@@ -28,6 +28,7 @@ $avis = array_reverse($avis);
       <nav class="menu">
         <a href="index.php#accueil">Accueil</a>
         <a href="produit.php">Produits</a>
+        <a href="nouveautes.php">Nouveautés <span class="nav-new">NEW</span></a> 
         <a href="index.php#about">À propos</a>
         <a href="index.php#avis" class="active">Avis</a>
       </nav>

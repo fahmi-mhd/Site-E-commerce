@@ -88,9 +88,9 @@ $added = isset($_GET["added"]) && $_GET["added"] === "1";
     <nav class="menu">
       <a href="index.php">Accueil</a>
       <a href="produit.php">Produits</a>
-      <a href="nouveautes.php">Nouveautés</a>
+      <a href="nouveautes.php" class="nav-new">Nouveautés <span class="new-badge">NEW</span></a>
       <a href="index.php#about">À propos</a>
-      <a href="contact.php">Contact</a>
+      <a href="index.php#avis">Avis</a>
 </nav>
 
     <div class="nav-actions">
