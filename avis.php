@@ -7,7 +7,6 @@ if (file_exists($avisFile)) {
   if (!is_array($avis)) $avis = [];
 }
 
-// afficher les plus récents en premier
 $avis = array_reverse($avis);
 ?>
 <!doctype html>

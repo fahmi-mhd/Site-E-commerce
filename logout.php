@@ -1,6 +1,12 @@
 <?php
 session_start();
-unset($_SESSION["user"]);
-session_destroy();
+
+$cart = $_SESSION["cart"] ?? [];
+
+$_SESSION = [];
+$_SESSION["cart"] = $cart;
+
+session_regenerate_id(true);
+
 header("Location: index.php");
 exit;

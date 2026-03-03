@@ -1,7 +1,10 @@
 <?php
 session_start();
 
-/* même mini-catalogue */
+require __DIR__ . "/config/db.php";
+
+$products = $pdo->query("SELECT sku, name, price, image FROM products ORDER BY id DESC")->fetchAll();
+
 $products = [
   "aj4" => ["name"=>"Air Jordan 4 Metallic Purple","price"=>189.99,"img"=>"assets/aj4.png"],
   "af1" => ["name"=>"Air Force 1","price"=>119.99,"img"=>"assets/af1.png"],
@@ -13,7 +16,6 @@ $products = [
   "yeezy350" => ["name" => "Yeezy Boost 350 V2","price" => 219.99,"img" => "assets/yeezy350.png"]
 ];
 
-/* badge panier */
 $cartCount = 0;
 if (!empty($_SESSION["cart"])) {
   foreach ($_SESSION["cart"] as $it) $cartCount += (int)$it["qty"];
@@ -29,6 +31,7 @@ unset($_SESSION["flash"]);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Produits - SneakVerse</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
 </head>
 <body>
 
@@ -85,7 +88,6 @@ unset($_SESSION["flash"]);
             <p class="product-price"><?= number_format($p["price"], 2, ",", " ") ?> €</p>
           </a>
 
-          <!-- ajout rapide -->
           <form action="panier.php" method="post">
             <input type="hidden" name="action" value="add">
             <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">

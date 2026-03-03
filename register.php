@@ -1,5 +1,6 @@
 <?php
 session_start();
+require __DIR__ . "/config/db.php";
 
 $errors = [];
 $old = [
@@ -21,11 +22,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if (strlen($pass) < 8) $errors[] = "Mot de passe trop court (minimum 8 caractères).";
   if ($pass !== $pass2) $errors[] = "Les mots de passe ne correspondent pas.";
 
-  // ✅ plus tard: vérifier email unique en DB + insert + password_hash()
   if (!$errors) {
-    $_SESSION["flash"] = "Compte prêt à être créé (on branchera la base après).";
-    header("Location: login.php");
-    exit;
+    try {
+      $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+      $stmt->execute([$email]);
+      if ($stmt->fetch()) {
+        $errors[] = "Cet email est déjà utilisé.";
+      } else {
+        $hash = password_hash($pass, PASSWORD_DEFAULT);
+
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)");
+        $stmt->execute([$name, $email, $hash]);
+
+        $_SESSION["user"] = [
+          "id" => (int)$pdo->lastInsertId(),
+          "username" => $name,
+          "email" => $email,
+          "role" => "user"
+        ];
+
+        $_SESSION["flash"] = "Compte créé avec succès. Bienvenue !";
+        header("Location: index.php");
+        exit;
+      }
+    } catch (PDOException $e) {
+      if ((string)$e->getCode() === "23000") {
+        $errors[] = "Cet email est déjà utilisé.";
+      } else {
+        $errors[] = "Erreur serveur (BDD). Réessaie plus tard.";
+      }
+    }
   }
 }
 

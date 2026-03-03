@@ -1,5 +1,6 @@
 <?php
 session_start();
+require __DIR__ . "/config/db.php";
 
 $errors = [];
 $email = "";
@@ -11,17 +12,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Email invalide.";
   if ($pass === "") $errors[] = "Mot de passe requis.";
 
-  // ✅ plus tard: vérifier en DB: SELECT user WHERE email; password_verify()
   if (!$errors) {
-    // Simule une connexion (on branchera la DB après)
-    $_SESSION["user"] = [
-      "id" => 1,
-      "name" => "Utilisateur",
-      "email" => $email
-    ];
-    $_SESSION["flash"] = "Connecté (simulation). On branche la base ensuite.";
-    header("Location: index.php");
-    exit;
+    $stmt = $pdo->prepare("SELECT id, username, email, password_hash, role FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+
+    if (!$user || !password_verify($pass, $user["password_hash"])) {
+      $errors[] = "Email ou mot de passe incorrect.";
+    } else {
+      // Connexion OK
+      $_SESSION["user"] = [
+        "id" => (int)$user["id"],
+        "username" => $user["username"],
+        "email" => $user["email"],
+        "role" => $user["role"]
+      ];
+
+      $_SESSION["flash"] = "Connexion réussie.";
+      header("Location: index.php");
+      exit;
+    }
   }
 }
 

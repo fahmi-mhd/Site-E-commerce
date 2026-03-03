@@ -4,7 +4,6 @@ session_start();
 if (!isset($_SESSION["cart"])) $_SESSION["cart"] = [];
 $cart =& $_SESSION["cart"];
 
-// --- helper : retour à la page précédente (sans sortir de ton site) ---
 function safe_back_url(): string {
   $back = $_SERVER["HTTP_REFERER"] ?? "index.php#produits";
   // sécurité simple : si ça contient un domaine externe, on force index
@@ -13,8 +12,6 @@ function safe_back_url(): string {
   }
   return $back;
 }
-
-// --- TRAITEMENT ---
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $action = $_POST["action"] ?? "";
 
@@ -30,8 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       }
       $cart[$id]["qty"] += 1;
     }
-
-    // ✅ on revient sur la page d’où tu as cliqué (index.php), pas sur panier.php
     header("Location: " . safe_back_url());
     exit;
   }
@@ -50,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   }
 }
 
-// --- CALCUL TOTAL + NB ARTICLES ---
 $total = 0;
 $count = 0;
 foreach ($cart as $item) {
@@ -58,5 +52,4 @@ foreach ($cart as $item) {
   $count += (int)$item["qty"];
 }
 
-// ✅ on inclut une vue PHP (pas .html)
 include "afficher_panier.php";

@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-/* petit "catalogue" en dur (simple) */
 $products = [
   "aj4" => [
     "name" => "Air Jordan 4 Metallic Purple",
@@ -63,7 +62,6 @@ if (!isset($products[$id])) {
 
 $p = $products[$id];
 
-/* badge panier */
 $cartCount = 0;
 if (!empty($_SESSION["cart"])) {
   foreach ($_SESSION["cart"] as $it) $cartCount += (int)$it["qty"];
@@ -78,6 +76,7 @@ $added = isset($_GET["added"]) && $_GET["added"] === "1";
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= htmlspecialchars($p["name"]) ?> - SneakVerse</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
 </head>
 <body>
 
@@ -88,7 +87,7 @@ $added = isset($_GET["added"]) && $_GET["added"] === "1";
     <nav class="menu">
       <a href="index.php">Accueil</a>
       <a href="produit.php">Produits</a>
-      <a href="nouveautes.php" class="nav-new">Nouveautés <span class="new-badge">NEW</span></a>
+      <a href="nouveautes.php">Nouveautés <span class="nav-new">NEW</span></a> 
       <a href="index.php#about">À propos</a>
       <a href="index.php#avis">Avis</a>
 </nav>
@@ -126,7 +125,8 @@ $added = isset($_GET["added"]) && $_GET["added"] === "1";
           <input type="hidden" name="price" value="<?= htmlspecialchars((string)$p["price"]) ?>">
           <input type="hidden" name="img" value="<?= htmlspecialchars($p["img"]) ?>">
           <input type="hidden" name="redirect" value="<?= htmlspecialchars("product.php?id=".$id."&added=1") ?>">
-          <button class="buy-now" type="submit">Ajouter au panier</button>
+          <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
+
         </form>
 
         <a class="btn ghost" href="index.php#produits">Retour</a>
