@@ -31,32 +31,31 @@ $products = [
     "price" => 139.99,
     "img" => "assets/nb550.png",
     "desc" => "Un modèle rétro basket revisité. Minimaliste et ultra tendance."
-],
-"dunklow" => [
-  "name" => "Nike Dunk Low Panda",
-  "price" => 129.99,
-  "img" => "assets/dunklow.png",
-  "desc" => "Une des paires les plus iconiques du moment. Noir et blanc intemporel, facile à porter avec toutes tes tenues street."
-],
-
-"gazelle" => [
-  "name" => "Adidas Gazelle Black",
-  "price" => 109.99,
-  "img" => "assets/gazelle.png",
-  "desc" => "Un classique Adidas revisité. Design vintage, confort léger et silhouette élégante qui traverse les générations."
-],
-
-"yeezy350" => [
-  "name" => "Yeezy Boost 350 V2",
-  "price" => 219.99,
-  "img" => "assets/yeezy350.png",
-  "desc" => "Une silhouette futuriste avec technologie Boost ultra confortable. Design moderne et détails premium pour un style affirmé."
-],
+  ],
+  "dunklow" => [
+    "name" => "Nike Dunk Low Panda",
+    "price" => 129.99,
+    "img" => "assets/dunklow.png",
+    "desc" => "Noir et blanc intemporel, facile à porter avec toutes tes tenues street."
+  ],
+  "gazelle" => [
+    "name" => "Adidas Gazelle Black",
+    "price" => 109.99,
+    "img" => "assets/gazelle.png",
+    "desc" => "Design vintage et silhouette élégante."
+  ],
+  "yeezy350" => [
+    "name" => "Yeezy Boost 350 V2",
+    "price" => 219.99,
+    "img" => "assets/yeezy350.png",
+    "desc" => "Technologie Boost ultra confortable. Design futuriste."
+  ],
 ];
 
 $id = $_GET["id"] ?? "";
+
 if (!isset($products[$id])) {
-  header("Location: index.php#produits");
+  header("Location: produit.php");
   exit;
 }
 
@@ -64,7 +63,9 @@ $p = $products[$id];
 
 $cartCount = 0;
 if (!empty($_SESSION["cart"])) {
-  foreach ($_SESSION["cart"] as $it) $cartCount += (int)$it["qty"];
+  foreach ($_SESSION["cart"] as $item) {
+    $cartCount += (int)$item["qty"];
+  }
 }
 
 $added = isset($_GET["added"]) && $_GET["added"] === "1";
@@ -76,8 +77,9 @@ $added = isset($_GET["added"]) && $_GET["added"] === "1";
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= htmlspecialchars($p["name"]) ?> - SneakVerse</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </head>
+
 <body>
 
 <header class="nav">
@@ -87,14 +89,17 @@ $added = isset($_GET["added"]) && $_GET["added"] === "1";
     <nav class="menu">
       <a href="index.php">Accueil</a>
       <a href="produit.php">Produits</a>
-      <a href="nouveautes.php">Nouveautés <span class="nav-new">NEW</span></a> 
+      <a href="nouveautes.php">Nouveautés <span class="nav-new">NEW</span></a>
       <a href="index.php#about">À propos</a>
       <a href="index.php#avis">Avis</a>
-</nav>
+    </nav>
 
     <div class="nav-actions">
-      <a class="icon-btn cart-btn" href="panier.php" aria-label="Ouvrir le panier">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7V6a5 5 0 0110 0v1h3v15H4V7h3zm2 0h6V6a3 3 0 00-6 0v1zm-3 2v11h12V9H6z"/></svg>
+      <a class="icon-btn cart-btn" href="panier.php" aria-label="Panier">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 7V6a5 5 0 0110 0v1h3v15H4V7h3zm2 0h6V6a3 3 0 00-6 0v1zm-3 2v11h12V9H6z"/>
+        </svg>
+
         <?php if ($cartCount > 0): ?>
           <span class="cart-badge"><?= (int)$cartCount ?></span>
         <?php endif; ?>
@@ -104,35 +109,37 @@ $added = isset($_GET["added"]) && $_GET["added"] === "1";
 </header>
 
 <main class="page">
+
   <?php if ($added): ?>
     <div class="toast">Ajouté au panier ✅</div>
   <?php endif; ?>
 
-  <div class="cart-item" style="max-width: 980px; margin: 0 auto;">
-    <img class="cart-img" src="<?= htmlspecialchars($p["img"]) ?>" alt="<?= htmlspecialchars($p["name"]) ?>">
-    <div class="cart-info">
-      <div class="cart-name"><?= htmlspecialchars($p["name"]) ?></div>
-      <div class="cart-meta"><?= number_format($p["price"], 2, ",", " ") ?> €</div>
-      <div style="max-width: 52ch; color: rgba(17,19,24,.70); font-weight: 600; line-height: 1.6;">
-        <?= htmlspecialchars($p["desc"]) ?>
-      </div>
-
-      <div style="margin-top: 10px; display:flex; gap:10px; flex-wrap:wrap;">
-        <form action="panier.php" method="post">
-          <input type="hidden" name="action" value="add">
-          <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">
-          <input type="hidden" name="name" value="<?= htmlspecialchars($p["name"]) ?>">
-          <input type="hidden" name="price" value="<?= htmlspecialchars((string)$p["price"]) ?>">
-          <input type="hidden" name="img" value="<?= htmlspecialchars($p["img"]) ?>">
-          <input type="hidden" name="redirect" value="<?= htmlspecialchars("product.php?id=".$id."&added=1") ?>">
-          <button class="add-btn" type="submit" aria-label="Ajouter au panier">+</button>
-
-        </form>
-
-        <a class="btn ghost" href="index.php#produits">Retour</a>
-      </div>
+  <section class="p-focus">
+    <div class="p-focus-img">
+      <img src="<?= htmlspecialchars($p["img"]) ?>" alt="<?= htmlspecialchars($p["name"]) ?>">
     </div>
-  </div>
+
+    <div class="p-focus-info">
+      <h1><?= htmlspecialchars($p["name"]) ?></h1>
+
+      <div class="price">
+        <?= number_format($p["price"], 2, ",", " ") ?> €
+      </div>
+
+      <p><?= htmlspecialchars($p["desc"]) ?></p>
+
+      <form action="panier.php" method="post">
+        <input type="hidden" name="action" value="add">
+        <input type="hidden" name="id" value="<?= htmlspecialchars($id) ?>">
+        <input type="hidden" name="name" value="<?= htmlspecialchars($p["name"]) ?>">
+        <input type="hidden" name="price" value="<?= htmlspecialchars((string)$p["price"]) ?>">
+        <input type="hidden" name="img" value="<?= htmlspecialchars($p["img"]) ?>">
+        <input type="hidden" name="redirect" value="<?= htmlspecialchars("product.php?id=".$id."&added=1") ?>">
+        <button class="buy-now" type="submit">AJOUTER AU PANIER</button>
+      </form>
+    </div>
+  </section>
+
 </main>
 
 </body>

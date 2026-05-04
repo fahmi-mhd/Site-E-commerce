@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require __DIR__ . "/config/db.php";
+
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
   header("Location: index.php#avis");
   exit;
@@ -11,28 +13,31 @@ $rating = (int)($_POST["rating"] ?? 5);
 $message = trim($_POST["message"] ?? "");
 
 if ($name === "" || $message === "") {
+  $_SESSION["flash"] = "Merci de remplir tous les champs.";
   header("Location: index.php#avis");
   exit;
 }
 
 $rating = max(1, min(5, $rating));
 
-$avisFile = __DIR__ . "/data/avis.json";
-if (!file_exists($avisFile)) {
-  file_put_contents($avisFile, json_encode([]));
+try {
+  $stmt = $pdo->prepare("
+    INSERT INTO reviews (name, rating, message)
+    VALUES (:name, :rating, :message)
+  ");
+
+  $stmt->execute([
+    "name" => $name,
+    "rating" => $rating,
+    "message" => $message
+  ]);
+
+  $_SESSION["flash"] = "Merci pour ton avis !";
+  header("Location: avis.php");
+  exit;
+
+} catch (PDOException $e) {
+  $_SESSION["flash"] = "Erreur lors de l'envoi de l'avis.";
+  header("Location: index.php#avis");
+  exit;
 }
-
-$avis = json_decode(file_get_contents($avisFile), true);
-if (!is_array($avis)) $avis = [];
-
-$avis[] = [
-  "name" => htmlspecialchars($name, ENT_QUOTES, "UTF-8"),
-  "rating" => $rating,
-  "message" => htmlspecialchars($message, ENT_QUOTES, "UTF-8"),
-  "date" => date("Y-m-d H:i")
-];
-
-file_put_contents($avisFile, json_encode($avis, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-header("Location: avis.php");
-exit;
